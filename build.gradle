@@ -2,9 +2,8 @@ plugins {
     id "java"
     id "cpp"
     id "google-test-test-suite"
-    
-    id 'edu.wpi.first.GradleVsCode' version '424242.0.0-local'
-    id "edu.wpi.first.GradleJni" version "424242.0.0-local"
+    id 'edu.wpi.first.GradleVsCode' version '0.8.0'
+    id "edu.wpi.first.GradleJni" version "0.4.1"
     id "edu.wpi.first.GradleRIO" version "2019.2.1"
     
 }
