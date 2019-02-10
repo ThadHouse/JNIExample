@@ -1,0 +1,44 @@
+plugins {
+    id "java"
+    id "cpp"
+    id "google-test-test-suite"
+    
+    id 'edu.wpi.first.GradleVsCode' version '424242.0.0-local'
+    id "edu.wpi.first.GradleJni" version "424242.0.0-local"
+    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    
+}
+
+model {
+    components {
+        JniLibrary(JniNativeLibrarySpec) {
+            targetPlatform wpi.platforms.desktop
+            targetPlatform wpi.platforms.roborio
+
+            javaCompileTasks << compileJava // set javaCompileTasks to any java compile tasks that contain your JNI classes. It is a list of tasks
+            jniCrossCompileOptions << JniCrossCompileOptions(wpi.platforms.roborio)
+
+            sources.cpp {
+                source {
+                    srcDir 'src/main/cpp'
+                    include '**/*.cpp', '**/*.cc'
+                }
+                exportedHeaders {
+                    srcDir 'src/main/include'
+                }
+            }
+
+            binaries.all {
+                // Don't build static libraries
+                if (it instanceof StaticLibraryBinarySpec) {
+                    it.buildable = false
+                }
+                if (it.targetPlatform.name.contains(wpi.platforms.roborio)) {
+                    useLibrary(it, "wpilibjni")
+                } else {
+                    useLibrary(it, "wpilibjni_common")
+                }
+            }
+        }
+    }
+}
